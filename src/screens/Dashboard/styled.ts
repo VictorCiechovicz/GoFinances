@@ -15,6 +15,6 @@ export const Title= styled.Text`
 
 font-size: 15px;
 font-weight: bold;
-color: ${({theme})=> theme.colors.title};
+color: ${(props)=> props.theme.colors.title};
 
 `;

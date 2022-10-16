@@ -1,6 +1,6 @@
 import React from 'react'
-//este componente do styled componentes cria um contexto de tema em nossa aplicação na quyal construimos la no theme
-import { ThemeProvider } from 'styled-components'
+//este componente do styled componentes cria um contexto de tema em nossa aplicação na qual construimos la no theme
+import {ThemeProvider } from 'styled-components'
 
 import theme from './src/global/styles/theme'
 import { Dashboard } from './src/screens/Dashboard'
