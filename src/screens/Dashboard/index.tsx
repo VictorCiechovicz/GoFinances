@@ -15,7 +15,7 @@ import {
 export function Dashboard() {
   return (
     <Container>
-      <Header>
+     <Header>
         <UserWrapper>
           <UserInfo>
             <Photo

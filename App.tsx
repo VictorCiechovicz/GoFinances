@@ -11,7 +11,7 @@ Poppins_700Bold
 } from '@expo-google-fonts/poppins'
 
 
-import AppLoading from 'expo-app-loading'
+import { Loading } from './src/componets/Loading'
 
 import theme from './src/global/styles/theme'
 import { Dashboard } from './src/screens/Dashboard'
@@ -26,7 +26,7 @@ export default function App() {
   })
 
   if(!fontsLoaded){
-    return <AppLoading/>
+    return <Loading/>
   }
   return (
     <ThemeProvider theme={theme}>
