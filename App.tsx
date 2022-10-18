@@ -11,7 +11,7 @@ Poppins_700Bold
 } from '@expo-google-fonts/poppins'
 
 
-import { Loading } from './src/componets/Loading'
+import { Loading } from './src/components/Loading'
 
 import theme from './src/global/styles/theme'
 import { Dashboard } from './src/screens/Dashboard'

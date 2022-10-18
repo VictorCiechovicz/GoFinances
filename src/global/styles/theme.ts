@@ -21,6 +21,8 @@ colors:{
       
       text:'#969cb2',
       
+     text_dark:'#000',
+
       background:'#f0f2f5',
 
 
