@@ -3,6 +3,8 @@ import { Button } from '../../components/Forms/Button'
 import { Input } from '../../components/Forms/Input'
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton'
 
+import { CategorySelect } from '../../components/Forms/CategorySelect'
+
 import {
   Container,
   Header,
@@ -43,6 +45,9 @@ export function Register() {
               isActive={transactionType === 'down'}
             />
           </TransactionType>
+
+
+          <CategorySelect title='Categoria'/>
         </Fields>
       </Form>
       <Button title="Enviar" />
