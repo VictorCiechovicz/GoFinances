@@ -3,8 +3,8 @@ import { RFValue } from "react-native-responsive-fontsize";
 import {Feather} from '@expo/vector-icons'
 
 export const Container = styled.View`
-flex: 1;
 
+flex: 1;
 background-color: ${({theme})=>theme.colors.background};
 
 `;
@@ -30,24 +30,23 @@ font-size: ${RFValue(18)}px;
 `;
 
 export const Category = styled.View`
-width: 100%;
-padding: ${RFValue(15)}px;
+ width: 100%;
+ padding: ${RFValue(15)}px;
 
-flex-direction: row;
-align-items: center;
+ flex-direction: row;
+ align-items: center;
 
 `;
 
 export const Icon = styled(Feather)`
-font-size: ${RFValue(20)}px;
-margin-right: 16px;
+ font-size: ${RFValue(20)}px;
+ margin-right: 16px;
 
 `;
 
 export const Name = styled.Text`
-
-font-family: ${({theme})=>theme.fonts.regular};
-font-size: ${RFValue(14)}px;
+ font-family: ${({theme})=>theme.fonts.regular};
+ font-size: ${RFValue(14)}px;
 `;
 
 export const Separador = styled.View`
