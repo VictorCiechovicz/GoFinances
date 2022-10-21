@@ -14,7 +14,7 @@ export function Loading() {
       }}
     >
       <LottieView
-        source={require('../../assets/Loading.json')}
+        source={require('../../../assets/Loading.json')}
         autoPlay
         loop
         style={{ width: 300 }}
