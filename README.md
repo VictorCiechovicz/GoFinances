@@ -8,6 +8,7 @@
 - React Native
 - Typescript
 - Styled-Components
+- React Hook Form
 - Expo Bare Workflow
 - Firebase Cloud Firestore
 - Firebase Cloud Auth
