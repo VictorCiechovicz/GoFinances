@@ -50,6 +50,8 @@ export function Register() {
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) })
+
+  
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria'
