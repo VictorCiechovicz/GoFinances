@@ -13,7 +13,6 @@ background-color:  ${({theme}) => theme.colors.background} ;
 
 `;
 
-
 //desta formna ele converte o valor de acordo com o tamanho da tela.
 export const Header=styled.View`
 width: 100%;
@@ -72,6 +71,10 @@ color:${({theme})=>theme.colors.shape};
 font-size: ${RFValue(18)}px;
 font-family: ${({theme})=>theme.fonts.bold};
 `;
+
+
+export const LogoutButton = styled.TouchableOpacity``;
+
 
 
 export const Icon = styled(Feather)`
