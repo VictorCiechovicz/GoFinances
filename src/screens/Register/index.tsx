@@ -9,7 +9,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { Button } from '../../components/Forms/Button'
 import { Input } from '../../components/Forms/Input'
+
+//Primeiro passo para utilizar o input controlado com hookform+yup
 import { InputForm } from '../../components/Forms/InputForm'
+
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton'
 
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton'
@@ -24,13 +27,14 @@ import {
   TransactionType
 } from './styled'
 
+
+//Quarto passso tipar os inputs do objeto que vai ser enviado
 interface FormData {
   name: string
   amount: string
 }
 
-//squema para validar o formulario
-
+//Terceiro passo para utilizar o input controlado com hookform+yup, criar o schema para o useForm
 const schema = Yup.object().shape({
   name: Yup.string()
     .required('Nome é obrigatório')
@@ -45,6 +49,7 @@ export function Register() {
   const [transactionType, setTransactionType] = useState('')
   const [categoryModalOpen, setcategoryModalOpen] = useState(false)
 
+//Segundo passo para utilizar o input controlado com hookform+yup criar essa const com o useForm
   const {
     control,
     handleSubmit,
@@ -68,7 +73,8 @@ export function Register() {
   function handleCloseSelectCategoryModal() {
     setcategoryModalOpen(false)
   }
-
+//Quinto passo criar uma funçaõ que envia os dados dos inputs 
+//Sexto envolver o botão com o handleSubmit para controle dele quando voce aperta-lo
   function handleRegister(form: FormData) {
     if (!transactionType) return Alert.alert('Selecione um tipo de transação.')
 
@@ -92,6 +98,7 @@ export function Register() {
         </Header>
         <Form>
           <Fields>
+
             <InputForm
               placeholder="Nome"
               control={control}
@@ -128,6 +135,7 @@ export function Register() {
               onPress={handleOpenSelectCategoryModal}
             />
           </Fields>
+      
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
         <Modal visible={categoryModalOpen}>
