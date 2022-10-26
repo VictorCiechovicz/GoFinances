@@ -20,6 +20,7 @@ export function InputForm({ control, name, error, ...rest }: Props) {
         )}
         name={name}
       />
+
       {error && <Error>{error}</Error>}
     </Conatiner>
   )
