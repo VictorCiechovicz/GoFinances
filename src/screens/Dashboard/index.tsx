@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { HighlightCard } from '../../components/HighlightCard'
 import {
   TransactionCard,
   TransactionCardProps
 } from '../../components/TransactionCard'
+
+
 
 import {
   Container,
@@ -27,8 +30,9 @@ import { Loading } from '../../components/Loading/Loading'
 export interface DataListProps extends TransactionCardProps {
   id: string
 }
-
+const dataKey = '@gofinances:transactions'
 export function Dashboard() {
+  const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState<DataListProps[]>([])
 
   async function loadTransactions() {
@@ -61,12 +65,25 @@ export function Dashboard() {
     )
 
     setData(transactionsFormatted)
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
     loadTransactions()
+  
+   
   }, [])
 
+  useFocusEffect(
+    useCallback(() => {
+      loadTransactions()
+    }, [])
+  )
+
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <Container>
       <Header>
@@ -115,7 +132,7 @@ export function Dashboard() {
 
         <TransactionList
           data={data}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => <TransactionCard data={item} />}
         />
       </Transactions>
