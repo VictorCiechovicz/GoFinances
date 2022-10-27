@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 //da tela o teclado desça
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { Button } from '../../components/Forms/Button'
-import { Input } from '../../components/Forms/Input'
 
 //Primeiro passo para utilizar o input controlado com hookform+yup
 import { InputForm } from '../../components/Forms/InputForm'
@@ -17,6 +16,12 @@ import { TransactionTypeButton } from '../../components/Forms/TransactionTypeBut
 
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton'
 import { CategorySelect } from '../CategorySelect'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+//esta lib cria uuid para cada objeto
+import uuid from 'react-native-uuid'
+
+import { useNavigation } from '@react-navigation/native'
 
 import {
   Container,
@@ -27,6 +32,9 @@ import {
   TransactionType
 } from './styled'
 
+type NavigationProps = {
+  navigate: (screen: string) => void
+}
 
 //Quarto passso tipar os inputs do objeto que vai ser enviado
 interface FormData {
@@ -49,14 +57,16 @@ export function Register() {
   const [transactionType, setTransactionType] = useState('')
   const [categoryModalOpen, setcategoryModalOpen] = useState(false)
 
-//Segundo passo para utilizar o input controlado com hookform+yup criar essa const com o useForm
+  const navigation = useNavigation<NavigationProps>()
+
+  //Segundo passo para utilizar o input controlado com hookform+yup criar essa const com o useForm
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) })
 
-  
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria'
@@ -73,21 +83,49 @@ export function Register() {
   function handleCloseSelectCategoryModal() {
     setcategoryModalOpen(false)
   }
-//Quinto passo criar uma funçaõ que envia os dados dos inputs 
-//Sexto envolver o botão com o handleSubmit para controle dele quando voce aperta-lo
-  function handleRegister(form: FormData) {
+  //Quinto passo criar uma funçaõ que envia os dados dos inputs
+  //Sexto envolver o botão com o handleSubmit para controle dele quando voce aperta-lo
+  async function handleRegister(form: FormData) {
     if (!transactionType) return Alert.alert('Selecione um tipo de transação.')
 
     if (category.key === 'category')
       return Alert.alert('Selecione um tipo de categoria.')
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
-      category: category.key
+      category: category.key,
+      date: new Date()
     }
-    console.log(data)
+    //abaixo estamos utilizando o AsyncStorage para persistir com os nossos dados
+    //salvando assim no dispositivo do usuário.
+    try {
+      //criamos esta chave para utilizar no AsyncStorage
+      const dataKey = '@gofinances:transactions'
+
+      //primeiro criamos uma função async, depois criamos este try catch  que vai
+      //pegar o que esta salvo no asyncstorage e verificar se tiver algo ele converte para um objeto,
+      //se não ele reotorna um objeto vazio
+      const data = await AsyncStorage.getItem(dataKey)
+      const currentData = data ? JSON.parse(data) : []
+      //aqui a const pega todos os valor que estão no asyncstorage e acrescenta mais o que foi colocado pelo usuario no formulario.
+      const dataFormatted = [...currentData, newTransaction]
+
+      //aqui ele espera e transforma em um string, pelo fato de que o asyncstorage so recebe uma string de dados
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted))
+      reset()
+      setTransactionType('')
+      setCategory({
+        key: 'category',
+        name: 'Category'
+      })
+      navigation.navigate('Listagem')
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Não foi possível salvar.')
+    }
   }
 
   return (
@@ -98,7 +136,6 @@ export function Register() {
         </Header>
         <Form>
           <Fields>
-
             <InputForm
               placeholder="Nome"
               control={control}
@@ -135,7 +172,7 @@ export function Register() {
               onPress={handleOpenSelectCategoryModal}
             />
           </Fields>
-      
+
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
         <Modal visible={categoryModalOpen}>
