@@ -35,10 +35,25 @@ export const ChartContainer= styled.View`
  align-items: center;
 `;
 
-export const MonthSelect = styled.View``;
+export const MonthSelect = styled.View`
+width: 100%;
+
+flex-direction: row;
+justify-content: space-between;
+align-items:center;
+
+margin-top:24px;
+`;
 
 export const MonthSelectButton = styled.TouchableOpacity``;
 
-export const SelectIcon = styled(Feather)``;
+export const MonthSelectIcon = styled(Feather)`
+font-size: ${RFValue(24)}px;
+`;
 
-export const Month = styled.Text``;
+export const Month = styled.Text`
+
+font-family:${({theme})=>theme.fonts.regular};
+font-size: ${RFValue(20)}px;
+
+`;

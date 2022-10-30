@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Header, Title, Content, ChartContainer,MonthSelect,MonthSelectButton,SelectIcon,Month } from './steled'
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  ChartContainer,
+  MonthSelect,
+  MonthSelectButton,
+  MonthSelectIcon,
+  Month
+} from './steled'
 import { HistoryCard } from '../../components/HistoryCard'
 import { categories } from '../../utils/categories'
 
@@ -8,7 +18,13 @@ import { VictoryPie } from 'victory-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 
+//lib para lidar com as datas, como neste caso vamos utilizar uma filtro de meses em
+//nossa aplicacao vamos utilizar esta lib que trata de uma forma mais pratica.
+import { addMonths, subMonths, format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
 import { useTheme } from 'styled-components'
+import { Loading } from '../../components/Loading/Loading'
 
 interface TransactionData {
   type: 'positive' | 'negative'
@@ -28,16 +44,34 @@ interface CategoryData {
 }
 
 export function Resume() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedDate, setSelectedData] = useState(new Date())
   const [totalByCategories, setTotalByCateories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
+
+  //essa funcao abaixo trabalha com a logica de adicionar o mes, temos aqui dois estados dentro dela de next e prev, se a acao for de next ele adiciona um mes se nao ele diminui.
+  function handleDateChange(action: 'next' | 'prev') {
+    if (action === 'next') {
+      const newDate = addMonths(selectedDate, 1)
+      setSelectedData(newDate)
+    } else {
+      const newDate = subMonths(selectedDate, 1)
+      setSelectedData(newDate)
+    }
+  }
+
   async function loadData() {
+    setIsLoading(true)
     const dataKey = '@gofinances:transactions'
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
 
     const expensives = responseFormatted.filter(
-      (expensive: TransactionData) => expensive.type === 'negative'
+      (expensive: TransactionData) =>
+        expensive.type === 'negative' &&
+        new Date(expensive.date).getMonth() === selectedDate.getDate() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     )
 
     const expesivesTotal = expensives.reduce(
@@ -76,11 +110,16 @@ export function Resume() {
       }
     })
     setTotalByCateories(totalByCategory)
+    setIsLoading(false)
   }
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [selectedDate])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <Container>
@@ -96,18 +135,16 @@ export function Resume() {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
-            <SelectIcon name="chevron-left"/>
+          <MonthSelectButton onPress={() => handleDateChange('prev')}>
+            <MonthSelectIcon name="chevron-left" />
           </MonthSelectButton>
 
-          <Month>Maio</Month>
+          <Month>{format(selectedDate, 'MMMM,yyyy', { locale: ptBR })}</Month>
 
-          <MonthSelectButton>
-          <SelectIcon name="chevron-right"/>
+          <MonthSelectButton onPress={() => handleDateChange('next')}>
+            <MonthSelectIcon name="chevron-right" />
           </MonthSelectButton>
-
         </MonthSelect>
- 
 
         <ChartContainer>
           <VictoryPie
