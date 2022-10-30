@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import {
   Container,
   Header,
@@ -113,9 +114,11 @@ export function Resume() {
     setIsLoading(false)
   }
 
-  useEffect(() => {
-    loadData()
-  }, [selectedDate])
+  useFocusEffect(
+    useCallback(() => {
+      loadData()
+    }, [selectedDate])
+  )
 
   if (isLoading) {
     return <Loading />
