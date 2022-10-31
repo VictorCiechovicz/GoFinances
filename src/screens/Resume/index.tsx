@@ -10,7 +10,7 @@ import {
   MonthSelectButton,
   MonthSelectIcon,
   Month
-} from './steled'
+} from './styled'
 import { HistoryCard } from '../../components/HistoryCard'
 import { categories } from '../../utils/categories'
 
@@ -67,11 +67,13 @@ export function Resume() {
     const dataKey = '@gofinances:transactions'
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
+    
+    const totalByCategory: CategoryData[] = []
 
     const expensives = responseFormatted.filter(
       (expensive: TransactionData) =>
         expensive.type === 'negative' &&
-        new Date(expensive.date).getMonth() === selectedDate.getDate() &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
         new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     )
 
@@ -82,7 +84,6 @@ export function Resume() {
       0
     )
 
-    const totalByCategory: CategoryData[] = []
 
     categories.forEach(category => {
       let categorySum = 0
@@ -152,6 +153,8 @@ export function Resume() {
         <ChartContainer>
           <VictoryPie
             data={totalByCategories}
+            x={'percent'}
+            y={'total'}
             colorScale={totalByCategories.map(category => category.color)}
             style={{
               labels: {
@@ -161,8 +164,6 @@ export function Resume() {
               }
             }}
             labelRadius={50}
-            x="percent"
-            y="total"
           />
         </ChartContainer>
 
