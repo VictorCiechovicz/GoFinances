@@ -66,8 +66,8 @@ export function Resume() {
     setIsLoading(true)
     const dataKey = '@gofinances:transactions'
     const response = await AsyncStorage.getItem(dataKey)
+
     const responseFormatted = response ? JSON.parse(response) : []
-    
     const totalByCategory: CategoryData[] = []
 
     const expensives = responseFormatted.filter(
@@ -132,11 +132,11 @@ export function Resume() {
       </Header>
 
       <Content
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 24,
-          paddingBottom: useBottomTabBarHeight()
-        }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingHorizontal: 24,
+        paddingBottom: useBottomTabBarHeight()
+      }}
       >
         <MonthSelect>
           <MonthSelectButton onPress={() => handleDateChange('prev')}>
