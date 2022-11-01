@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, {  useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import {
   Container,
@@ -163,7 +163,7 @@ export function Resume() {
                 fill: theme.colors.shape
               }
             }}
-            labelRadius={50}
+            labelRadius={120}
           />
         </ChartContainer>
 
