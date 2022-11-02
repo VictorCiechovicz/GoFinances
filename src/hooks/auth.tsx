@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import * as AuthSession from 'expo-auth-session'
 
 const { CLIENT_ID } = process.env
@@ -26,6 +26,7 @@ interface AuthorizationResponse {
   }
   type: string
 }
+
 
 const AuthContext = createContext({} as IAuthContextData)
 
@@ -60,6 +61,9 @@ function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(error)
     }
   }
+
+
+
 
   return (
     <AuthContext.Provider

@@ -17,11 +17,9 @@ import { Loading } from './src/components/Loading/Loading'
 
 import theme from './src/global/styles/theme'
 
-import { NavigationContainer } from '@react-navigation/native'
-import { AppRoutes } from './src/routes/app.routes'
-import { SingIn } from './src/screens/SingIn'
+import { Routes } from './src/routes'
 
-import {  AuthProvider,useAuth } from './src/hooks/auth'
+import { AuthProvider } from './src/hooks/auth'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -36,11 +34,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <AuthProvider>
-          <SingIn />
-        </AuthProvider>
-      </NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </ThemeProvider>
   )
 }
