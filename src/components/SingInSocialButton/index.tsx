@@ -10,9 +10,9 @@ interface Props extends TouchableOpacityProps {
 
 export function SingInSocialButton({ title, svg: Svg, ...rest }: Props) {
   return (
-    <Button>
+    <Button {...rest}>
       <ImagemContainer>
-        <Svg  />
+        <Svg />
       </ImagemContainer>
       <Text>{title}</Text>
     </Button>
