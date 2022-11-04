@@ -26,6 +26,7 @@ interface User {
 interface IAuthContextData {
   user: User
   signInGoogle(): Promise<void>
+  signOut(): Promise<void>
 }
 
 interface AuthorizationResponse {
@@ -53,9 +54,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         authUrl
       })) as AuthorizationResponse
 
-
       if (type === 'success') {
-
         const response = await fetch(
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`
         )
@@ -63,7 +62,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         const userInfo = await response.json()
         const name = userInfo.name
         const photo = `https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=ffffff`
-      
+
         const userLogged = {
           id: userInfo.id,
           email: userInfo.email,
@@ -71,11 +70,16 @@ function AuthProvider({ children }: AuthProviderProps) {
           photo: userInfo.picture ?? photo
         }
         setUser(userLogged)
-        await AsyncStorage.setItem(COLLECTION_USER, JSON.stringify(userLogged))
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged))
       }
     } catch (error) {
       throw new Error(error)
     }
+  }
+
+  async function signOut() {
+    setUser({} as User)
+    await AsyncStorage.removeItem(userStorageKey)
   }
 
   useEffect(() => {
@@ -92,15 +96,16 @@ function AuthProvider({ children }: AuthProviderProps) {
     loadUserStorageData()
   }, [])
 
-// if (!isLoading) {
-//   return <Loading />
-// }
+  if (!isLoading) {
+    return <Loading />
+  }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        signInGoogle
+        signInGoogle,
+        signOut
       }}
     >
       {children}
