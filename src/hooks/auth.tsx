@@ -1,6 +1,13 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import * as AuthSession from 'expo-auth-session'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Loading } from '../components/Loading/Loading'
 
 const { CLIENT_ID } = process.env
 const { REDIRECT_URI } = process.env
@@ -28,59 +35,66 @@ interface AuthorizationResponse {
   type: string
 }
 
-
 const AuthContext = createContext({} as IAuthContextData)
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
-  const[isLoading,setIsLoading]=useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const userStorageKey= '@gofinances:user'
+  const userStorageKey = '@gofinances:user'
 
   async function signInGoogle() {
     try {
       const RESPONSE_TYPE = 'token'
       const SCOPE = encodeURI('profile email')
-
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
 
       const { type, params } = (await AuthSession.startAsync({
         authUrl
       })) as AuthorizationResponse
+
+
       if (type === 'success') {
+
         const response = await fetch(
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`
         )
 
         const userInfo = await response.json()
-
-        setUser({
+        const name = userInfo.name
+        const photo = `https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=ffffff`
+      
+        const userLogged = {
           id: userInfo.id,
           email: userInfo.email,
-          name: userInfo.given_name,
-          photo: userInfo.picture
-        })
+          name,
+          photo: userInfo.picture ?? photo
+        }
+        setUser(userLogged)
+        await AsyncStorage.setItem(COLLECTION_USER, JSON.stringify(userLogged))
       }
     } catch (error) {
       throw new Error(error)
     }
   }
 
-useEffect(()=>{
+  useEffect(() => {
+    async function loadUserStorageData() {
+      const userStoraged = await AsyncStorage.getItem(userStorageKey)
 
-async function loadUserStorageData() {
-  const userStoraged =await AsyncStorage.getItem(userStorageKey)
+      if (userStoraged) {
+        const userLogged = JSON.parse(userStoraged) as User
+        setUser(userLogged)
+      }
+      setIsLoading(false)
+    }
 
-  if(userStoraged){
-    const userLogged=JSON.parse(userStoraged) as User
-    setUser(userLogged)
-  }
-  setIsLoading(false)
-}
+    loadUserStorageData()
+  }, [])
 
-loadUserStorageData()
-},[])
-
+// if (!isLoading) {
+//   return <Loading />
+// }
 
   return (
     <AuthContext.Provider
