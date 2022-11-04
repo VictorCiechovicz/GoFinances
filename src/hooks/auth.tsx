@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import * as AuthSession from 'expo-auth-session'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { CLIENT_ID } = process.env
 const { REDIRECT_URI } = process.env
@@ -32,6 +33,9 @@ const AuthContext = createContext({} as IAuthContextData)
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
+  const[isLoading,setIsLoading]=useState(true)
+
+  const userStorageKey= '@gofinances:user'
 
   async function signInGoogle() {
     try {
@@ -62,7 +66,20 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+useEffect(()=>{
 
+async function loadUserStorageData() {
+  const userStoraged =await AsyncStorage.getItem(userStorageKey)
+
+  if(userStoraged){
+    const userLogged=JSON.parse(userStoraged) as User
+    setUser(userLogged)
+  }
+  setIsLoading(false)
+}
+
+loadUserStorageData()
+},[])
 
 
   return (
