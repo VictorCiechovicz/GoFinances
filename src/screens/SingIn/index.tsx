@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
+import { Loading } from '../../components/Loading/Loading'
 
 import {
   Container,
@@ -18,15 +19,23 @@ import { useAuth } from '../../hooks/auth'
 import { Alert } from 'react-native'
 
 export function SingIn() {
+  const [isLoading, setIsLoading] = useState(false)
   const { signInGoogle } = useAuth()
 
   async function handleSignInGoogle() {
     try {
+      setIsLoading(true)
       await signInGoogle()
     } catch (error) {
       console.log(error)
       Alert.alert('Não foi possível conectar a conta Google')
+    } finally{
+      setIsLoading(false)
     }
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
   return (
     <Container>

@@ -9,6 +9,8 @@
 - Typescript
 - Styled-Components
 - React Hook Form
+- Yup
+- React Responsive Fontsize
 - Expo Bare Workflow
 - Firebase Cloud Firestore
 - Firebase Cloud Auth
