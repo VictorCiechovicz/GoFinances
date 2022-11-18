@@ -49,7 +49,7 @@ export function Dashboard() {
     {} as HighlightData
   )
 
-  const { signOut } = useAuth()
+  const { signOut,user } = useAuth()
 
   //logica abaixo retorna o valor da data da ultima transação.
   function getLastTransactionDate(
@@ -171,12 +171,12 @@ export function Dashboard() {
           <UserInfo>
             <Photo
               source={{
-                uri: 'https://avatars.githubusercontent.com/u/106246945?v=4'
+                uri: user.photo
               }}
             />
             <User>
               <UserGreeting>Olá,</UserGreeting>
-              <UserName>Victor</UserName>
+              <UserName>{user.name}</UserName>
             </User>
           </UserInfo>
 

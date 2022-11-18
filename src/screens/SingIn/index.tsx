@@ -19,17 +19,17 @@ import { useAuth } from '../../hooks/auth'
 import { Alert } from 'react-native'
 
 export function SingIn() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const { signInGoogle } = useAuth()
 
   async function handleSignInGoogle() {
     try {
       setIsLoading(true)
-      await signInGoogle()
+      return await signInGoogle()
     } catch (error) {
       console.log(error)
       Alert.alert('Não foi possível conectar a conta Google')
-    } finally{
+    } finally {
       setIsLoading(false)
     }
   }
