@@ -24,6 +24,8 @@ import {
   LogoutButton
 } from './styled'
 import { Loading } from '../../components/Loading/Loading'
+import { Loading2 } from '../../components/Loadind2'
+
 import { LastTransaction } from '../../components/HighlightCard/styled'
 import { useAuth } from '../../hooks/auth'
 
@@ -49,7 +51,7 @@ export function Dashboard() {
     {} as HighlightData
   )
 
-  const { signOut,user } = useAuth()
+  const { signOut, user } = useAuth()
 
   //logica abaixo retorna o valor da data da ultima transação.
   function getLastTransactionDate(
@@ -162,7 +164,7 @@ export function Dashboard() {
   )
 
   if (isLoading) {
-    return <Loading />
+    return <Loading2 />
   }
   return (
     <Container>

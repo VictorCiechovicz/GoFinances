@@ -8,6 +8,7 @@ import React, {
 import * as AuthSession from 'expo-auth-session'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Loading } from '../components/Loading/Loading'
+import { Loading2 } from '../components/Loadind2'
 
 const { CLIENT_ID } = process.env
 const { REDIRECT_URI } = process.env
@@ -96,8 +97,8 @@ function AuthProvider({ children }: AuthProviderProps) {
     loadUserStorageData()
   }, [])
 
-  if (!isLoading) {
-    return <Loading />
+  if (isLoading) {
+    return <Loading2 />
   }
 
   return (

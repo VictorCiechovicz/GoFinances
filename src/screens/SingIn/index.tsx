@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Loading } from '../../components/Loading/Loading'
+import { Loading2 } from '../../components/Loadind2'
 
 import {
   Container,
@@ -35,7 +36,7 @@ export function SingIn() {
   }
 
   if (isLoading) {
-    return <Loading />
+    return <Loading2 />
   }
   return (
     <Container>
