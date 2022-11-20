@@ -19,8 +19,7 @@
 ## **🛠️ Features**
 
 - [ ] User authentication (customer and waiter)
-- [ ] User Register
-- [ ] Password Recovery with e-mail
+- [ ] User SignIn with Google or Apple account
 - [ ] Screen Routes
 - [ ] And more...
 
