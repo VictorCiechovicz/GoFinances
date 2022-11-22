@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Loading } from '../../components/Loading/Loading'
-import { Loading2 } from '../../components/Loadind2'
+
 
 import {
   Container,
@@ -20,7 +20,7 @@ import { useAuth } from '../../hooks/auth'
 import { Alert } from 'react-native'
 
 export function SingIn() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const { signInGoogle } = useAuth()
 
   async function handleSignInGoogle() {
@@ -36,7 +36,7 @@ export function SingIn() {
   }
 
   if (isLoading) {
-    return <Loading2 />
+    return <Loading />
   }
   return (
     <Container>

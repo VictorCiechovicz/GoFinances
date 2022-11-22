@@ -14,7 +14,6 @@ import {
 } from '@expo-google-fonts/poppins'
 
 import { Loading } from './src/components/Loading/Loading'
-import { Loading2 } from './src/components/Loadind2'
 
 import theme from './src/global/styles/theme'
 
@@ -30,7 +29,7 @@ export default function App() {
   })
 
   if (!fontsLoaded) {
-    return <Loading2 />
+    return <Loading />
   }
   return (
     <ThemeProvider theme={theme}>
