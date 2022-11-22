@@ -31,6 +31,7 @@ import {
   Fields,
   TransactionType
 } from './styled'
+import { useAuth } from '../../hooks/auth'
 
 type NavigationProps = {
   navigate: (screen: string) => void
@@ -58,6 +59,8 @@ export function Register() {
   const [categoryModalOpen, setcategoryModalOpen] = useState(false)
 
   const navigation = useNavigation<NavigationProps>()
+
+  const { user } = useAuth()
 
   //Segundo passo para utilizar o input controlado com hookform+yup criar essa const com o useForm
   const {
@@ -103,7 +106,7 @@ export function Register() {
     //salvando assim no dispositivo do usuário.
     try {
       //criamos esta chave para utilizar no AsyncStorage
-      const dataKey = '@gofinances:transactions'
+      const dataKey = `@gofinances:transactions_user:${user.id}`
 
       //primeiro criamos uma função async, depois criamos este try catch  que vai
       //pegar o que esta salvo no asyncstorage e verificar se tiver algo ele converte para um objeto,

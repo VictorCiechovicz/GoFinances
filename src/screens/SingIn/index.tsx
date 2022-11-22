@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Loading } from '../../components/Loading/Loading'
 
-
 import {
   Container,
   Header,
@@ -30,7 +29,6 @@ export function SingIn() {
     } catch (error) {
       console.log(error)
       Alert.alert('Não foi possível conectar a conta Google')
-    } finally {
       setIsLoading(false)
     }
   }

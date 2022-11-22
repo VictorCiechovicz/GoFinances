@@ -1,4 +1,4 @@
-import React, {  useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import {
   Container,
@@ -26,6 +26,7 @@ import { ptBR } from 'date-fns/locale'
 
 import { useTheme } from 'styled-components'
 import { Loading } from '../../components/Loading/Loading'
+import { useAuth } from '../../hooks/auth'
 
 interface TransactionData {
   type: 'positive' | 'negative'
@@ -50,6 +51,7 @@ export function Resume() {
   const [totalByCategories, setTotalByCateories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
+  const { user } = useAuth()
 
   //essa funcao abaixo trabalha com a logica de adicionar o mes, temos aqui dois estados dentro dela de next e prev, se a acao for de next ele adiciona um mes se nao ele diminui.
   function handleDateChange(action: 'next' | 'prev') {
@@ -64,7 +66,7 @@ export function Resume() {
 
   async function loadData() {
     setIsLoading(true)
-    const dataKey = '@gofinances:transactions'
+    const dataKey = `@gofinances:transactions_user:${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
 
     const responseFormatted = response ? JSON.parse(response) : []
@@ -83,7 +85,6 @@ export function Resume() {
       },
       0
     )
-
 
     categories.forEach(category => {
       let categorySum = 0
@@ -132,11 +133,11 @@ export function Resume() {
       </Header>
 
       <Content
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        paddingHorizontal: 24,
-        paddingBottom: useBottomTabBarHeight()
-      }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight()
+        }}
       >
         <MonthSelect>
           <MonthSelectButton onPress={() => handleDateChange('prev')}>
